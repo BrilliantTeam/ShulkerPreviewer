@@ -24,6 +24,13 @@ format:
 # 每行顯示幾個物品
 row-items: 5
 
+# 壓縮顯示
+#   將相同的物品合併計算數量後顯示
+#   例如 石頭 x64 , 石頭 x64 -> 石頭 x128
+#   true = 開啟
+#   false = 關閉
+compress: false
+
 # 指令控制
 command:
   # 預設顯示狀態

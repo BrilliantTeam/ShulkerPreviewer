@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import xuan.cat.shulker_previewer.code.config.GlobalConfig;
 import xuan.cat.shulker_previewer.code.config.ItemFormat;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,19 @@ public final class PacketListen extends PacketAdapter {
         }
     }
 
+    private @NotNull List<ItemStack> compress(@NotNull List<ItemStack> contents) {
+        List<ItemStack> merged = new ArrayList<>();
+        for (ItemStack content : contents) {
+            ItemStack same = merged.stream().filter(exist -> exist.isSimilar(content)).findFirst().orElse(null);
+            if (same != null) {
+                same.setAmount(same.getAmount() + content.getAmount());
+            } else {
+                merged.add(content.clone());
+            }
+        }
+        return merged;
+    }
+
     private @Nullable ItemStack replaceItems(@Nullable ItemStack item) {
         return replaceItems(item, true);
     }
@@ -91,9 +105,14 @@ public final class PacketListen extends PacketAdapter {
         }
         AtomicInteger count = new AtomicInteger();
         Map<Integer, Component> lore = new LinkedHashMap<>();
-        Stream.of(write ? box.getInventory().getStorageContents() : new ItemStack[0])
+        List<ItemStack> contents = Stream.of(write ? box.getInventory().getStorageContents() : new ItemStack[0])
                 .filter(Objects::nonNull)
                 .filter(content -> !content.isEmpty())
+                .collect(Collectors.toList());
+        if (getConfig().compress) {
+            contents = compress(contents);
+        }
+        contents.stream()
                 .map(content -> {
                     ItemMeta meta = content.getItemMeta();
                     ItemFormat format;

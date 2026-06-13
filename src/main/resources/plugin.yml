@@ -2,7 +2,7 @@ name: ShulkerPreviewer
 version: ${project.version}
 main: xuan.cat.shulker_previewer.code.PluginMain
 api-version: 1.20
-authors: [xuancat]
+authors: [xuancat, RiceChen_]
 depend: [ProtocolLib]
 folia-supported: true
 commands:

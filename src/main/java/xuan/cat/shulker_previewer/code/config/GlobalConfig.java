@@ -13,6 +13,7 @@ public final class GlobalConfig {
     public final @NotNull String formatSeparator;
     public final @NotNull String formatHead;
     public final int rowItems;
+    public final boolean compress;
     public final boolean commandDefault;
     public final @NotNull String commandMessagesToOn;
     public final @NotNull String commandMessagesToOff;
@@ -29,6 +30,7 @@ public final class GlobalConfig {
         formatSeparator = config.getString("format.separator", "");
         formatHead = config.getString("format.head", "");
         rowItems = max(1, config.getInt("row-items", 1));
+        compress = config.getBoolean("compress", false);
         commandDefault = config.getBoolean("command.default", true);
         commandMessagesToOn = config.getString("command.messages.to-on", "");
         commandMessagesToOff = config.getString("command.messages.to-off", "");
